@@ -1,0 +1,58 @@
+{% extends 'todapp/base.html' %}}
+
+{% block content %}
+    <div class="container">
+        {% for tag in tag_choices %}
+        <legend id="collapse-main" class="btn btn-primary border-bottom collapsed" style="border: 2pt; background-color: "  data-toggle="collapse" data-target="#{{tag}}1" ></legend>
+            <div class="collapse show" id="{{tag}}1">
+            <legend id="collapse-toggle" class="btn btn-outline-light btn-lg btn-block border-bottom mb-2 text-primary  font-weight-bold text-left collapsed" data-toggle="collapse" data-target="#{{tag}}">{{tag}}</legend>
+            <div class="collapse show" id="{{tag}}">
+            <ul class="list-group" >
+                {% for todo in object_list %}
+                {% if todo.get_tag == tag %}
+                <li  aria-disabled="true" style="list-style: none;">
+                    <div class="form-control mb-1 d-flex flex-row justify-content-between flex-wrap" aria-label="Note associated with checkbox">
+                            <div class="d-flex flex-row justify-content-start flex-wrap align-items-center">
+                                <form  action="{% url 'todoapp:update-done' todo.pk %}" method="POST">{% csrf_token%}
+                                    <input  class="btn btn-primary mr-2" type="submit" value="">
+                                 </form>
+                                {% if todo.completed %}
+                                 <a style="text-decoration: line-through; margin-right: 10px;" href="{% url 'todoapp:update' todo.pk %}">{{todo.todoitem}} </a>
+                                 {% else %}
+                                    <a style="text-decoration:none;  margin-right: 10px;" href="{% url 'todoapp:update' todo.pk %}">{{todo.todoitem}}</a>
+                                 {% endif %}
+                                 {% if todo.note %}
+                                    <button type="button" class="btn btn-primary btn-sm  pr-4 pl-4" style="border-radius: 15px;" data-container="body" data-trigger="focus"  data-toggle="popover" data-placement="bottom" data-content="{{todo.note}}" >
+                                    Note
+                                    </button>
+                                  {% endif %}
+                            </div>
+                            <a href="{% url 'todoapp:delete' todo.pk %}">
+                                <svg class="bi bi-trash float-right" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>
+                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>
+                                </svg>
+                            </a>
+                    </div>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+<script>
+
+$(function () {
+$('[data-toggle="popover"]').popover()
+})
+
+$('.popover-dismiss').popover({
+trigger: 'focus'
+})
+</script>
+
+{% endblock %}
+

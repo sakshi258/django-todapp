@@ -1,0 +1,12 @@
+/* Icon when the collapsible content is shown */
+#collapse-toggle:after {
+font-family: "Glyphicons Halflings";
+content: "▼";
+float: right;
+margin-left: 15px;
+}
+/* Icon when the collapsible content is hidden */
+#collapse-toggle.collapsed:after {
+content: "▲";
+}
+
